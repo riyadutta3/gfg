@@ -104,34 +104,75 @@ struct Node
 class Solution{
     public:
     //Function to check whether a binary tree is balanced or not.
-    int height(Node* root)
+    
+    pair<bool,int> func(Node* root)
     {
         if(root==NULL)
-        return 0;
+        {
+            pair<bool,int> p = make_pair(true,0);
+            return p;
+        }
         
-        int left = height(root->left)+1;
-        int right = height(root->right)+1;
+        pair<bool,int> left = func(root->left);
+        pair<bool,int> right = func(root->right);
         
-        int ans = max(left, right);
+        bool leftB = left.first;
+        bool rightB = right.first;
         
-        return ans;
+        int leftH = left.second+1;
+        int rightH = right.second+1;
+        
+        bool ans = ( abs(leftH-rightH) <= 1);
+        
+        
+        pair<bool,int> res;
+        res.second = max(leftH, rightH);
+        if(leftB && rightB && ans)
+        {
+            res.first = true;
+        }
+        else
+        {
+            res.first = false;
+        }
+        
+        return res;
     }
-    
     
     bool isBalanced(Node *root)
     {
-        if(root==NULL)
-        return true;
-        
-        bool left = isBalanced(root->left);
-        bool right = isBalanced(root->right);
-        bool diff = (abs(height(root->left)-height(root->right))<=1);
-        
-        if(left && right && diff)
-        return true;
-        
-        return false;
+        return func(root).first;
     }
+    
+    
+    // int height(Node* root)
+    // {
+    //     if(root==NULL)
+    //     return 0;
+        
+    //     int left = height(root->left)+1;
+    //     int right = height(root->right)+1;
+        
+    //     int ans = max(left, right);
+        
+    //     return ans;
+    // }
+    
+    
+    // bool isBalanced(Node *root)
+    // {
+    //     if(root==NULL)
+    //     return true;
+        
+    //     bool left = isBalanced(root->left);
+    //     bool right = isBalanced(root->right);
+    //     bool diff = (abs(height(root->left)-height(root->right))<=1);
+        
+    //     if(left && right && diff)
+    //     return true;
+        
+    //     return false;
+    // }
 };
 
 
