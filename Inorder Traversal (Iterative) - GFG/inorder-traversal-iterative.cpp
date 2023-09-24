@@ -98,29 +98,39 @@ class Solution {
 public:
     vector<int> inOrder(Node* root)
     {
-        vector<int> v;
-        stack<Node*> s;
-
-    while(true)
-    {
-        if(root!=NULL)
+        vector<int> ans;
+        Node* curr = root;
+        
+        while(curr != NULL)
         {
-            s.push(root);
-            root = root->left;
+            if(curr->left == NULL)
+            {
+                ans.push_back(curr->data);
+                curr = curr->right;
+            }
+            else
+            {
+                Node* prev = curr->left;
+                while(prev->right && prev->right != curr)
+                {
+                    prev = prev->right;
+                }
+                
+                if(prev->right == NULL)
+                {
+                    prev->right = curr;
+                    curr = curr->left;
+                }
+                else
+                {
+                    prev->right = NULL;
+                    ans.push_back(curr->data);
+                    curr = curr->right;
+                }
+            }
         }
-        else
-        {
-            if(s.empty() == true) break;
-
-            root = s.top();
-            s.pop();
-            v.push_back(root->data);
-            root = root->right;
-        }
-
-    }
-    
-    return v;
+        
+        return ans;
     }
 };
 
